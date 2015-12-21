@@ -40,9 +40,14 @@ class DefaultController extends Controller
 	 */
 	public function measuringAction(Request $request)
 	{
+        $type = $request->get('type') ? : 1;
+        if( is_array($type))
+            $type_id = $type[0];
+        $result_type = $this->getDoctrine()->getRepository('AppBundle:Type')->find($type_id);
 		$cities =  $this->getDoctrine()->getRepository('AppBundle:City')->findAll();
 		return $this->render('AppBundle:default:measuring.html.twig',array(
 			'cities'=> $cities,
+            'type'=> $result_type,
 		));
 	}
 	/**
@@ -67,6 +72,9 @@ class DefaultController extends Controller
 			'standard'=>$standard,
 			'layer'=>$layer,
 		));
+        if( null == $result ){
+            return new Response('参数不正确，无法计算');
+        }
 		$rate = $result->getRate();
 		$data = '
 				<div class="cInfo">
