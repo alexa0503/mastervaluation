@@ -1,0 +1,21 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: '3306'
+    database_name: california
+    database_user: california
+    database_password: HLhzzUJMC84SEAev
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    locale: cn
+    secret: bec8ba4263a43f67fdc3dff696ebdd63
+    wechat_appid: ''
+    wechat_secret: ''
+    app.wechat_title: ''
+    app.wechat_desc: ''
+    app.wechat_img_url: images/share.jpg
+    weibo_key: 2282881576
+    weibo_secret: 9654cff8e8595a848681e936bfa770c4

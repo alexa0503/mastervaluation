@@ -1,0 +1,72 @@
+{% extends 'AppBundle:admin:layout.html.twig' %}
+{% block content %}
+<div class="panel panel-default">
+	<div class="panel-body">
+		<div class="table-responsive">
+			<!--<div id="table2_wrapper" class="dataTables_wrapper no-footer">
+			<div class="dataTables_length" id="table2_length"></div>
+			<div id="table2_filter" class="dataTables_filter"><a href="{{ url('admin_export') }}" class="label label-danger">导出中奖信息</a><label>Search:<input type="search" class="" placeholder="" aria-controls="table2"></label>--></div>
+			<table id="table2" class="table table-striped dataTable no-footer" role="grid" aria-describedby="table2_info">
+			<thead>
+			 <tr role="row">
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1" style="width: 40px;">ID</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">微博ID</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">微博昵称</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">图片</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1" width="200">描述</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">点赞数</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">创建时间</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1">创建IP</th>
+				<th tabindex="0" aria-controls="table2" rowspan="1" colspan="1" width="60">操作</th>
+			</tr>
+		 </thead>
+		 <tbody>
+		 {% for p in pagination %}
+			<tr class="gradeA {% if loop.index is odd %} odd{% else %} even{% endif %}" role="row">
+				<td>{{ p.id }}</td>
+				<td>{{ p.uid }}</td>
+				<td>{{ p.username }}</td>
+				<td><img src="/uploads/{{ p.imgUrl }}" style="max-width:100px;max-height:100px;" /></td>
+				<td>{{ p.title }}</td>
+				<td>{{ p.likeNum }}</td>
+				<td>{{ p.createTime | date("Y-m-d H:i:s") }}</td>
+				<td>{{ p.createIp }}</td>
+				<td><a href="{{ url('_share',{id:p.id}) }}" target="_blank">查看</a> <a href="{{ url('_admin_photo_delete',{id:p.id}) }}" class="delete">删除</a></td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+<div class="dataTables_info" id="table2_info" role="status" aria-live="polite">共{{ pagination.getTotalItemCount }}条记录</div>
+<div class="dataTables_paginate paging_full_numbers" id="table2_paginate">
+{{ knp_pagination_render(pagination) }}
+</div>
+</div>
+</div><!-- table-responsive -->
+
+</div><!-- panel-body -->
+</div>
+{% endblock %}
+{% block title %}照片管理{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('.delete').click(function(){
+			var obj = $(this).parent('td').parent('tr');
+			url = $(this).attr('href');
+			if(confirm('删除将无法撤销,是否继续?')){
+				$.getJSON(url,function(json){
+					if(json && json.ret == 0){
+						obj.remove();
+					}
+					else{
+						alert(json.msg);
+					}
+				})
+			}
+			
+			return false;
+		})
+	})
+</script>
+{% endblock %}

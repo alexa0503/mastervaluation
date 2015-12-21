@@ -1,0 +1,108 @@
+{% extends 'AppBundle:default:layout.html.twig' %}
+{% block content %}
+   <div class="topTitle">
+        在建工程  服务式公寓
+    </div>
+    
+    <div class="cMain">
+        <form type="post" action="{{ url('_calculate') }}" id="form">
+            
+        <div class="cLine">
+            <h3>城市</h3>
+            <select class="cSelect" id="grade" name="grade">
+                <option value="">请选择城市</option>
+            {% for city in cities %}
+                <option value="{{ city.grade }}">{{ city.title }}</option>
+            {% endfor %}
+            </select>
+        </div>
+        
+        <div class="cLine">
+            <h3>区域</h3>
+            <select class="cSelect" id="regional" name="regional">
+                <option value="">请选择区域</option>
+                <option value="1">城市核心区</option>
+                <option value="2">区域核心区</option>
+                <option value="3">一般区域</option>
+            </select>
+        </div>
+        
+        <div class="cLine">
+            <h3>规划建筑面积（平方米）如无资料可空白仅计算单价</h3>
+            <input type="text" class="cInput" placeholder="1" name="area" id="area">
+        </div>
+        
+        <div class="cLine">
+            <h3>服务式公寓品牌</h3>
+            <select class="cSelect" id="brand" name="brand">
+                <option value="">请选择公寓品牌</option>
+                <option value="1">国际</option>
+                <option value="2">国内</option>
+            </select>
+        </div>
+        
+        <div class="cLine">
+            <h3>房间数</h3>
+            <input type="text" class="cInput" placeholder="房间数" id="roomNumber" name="roomNumber">
+        </div>
+        
+        <div class="cLine">
+            <h3>预计平均房价（人民币）</h3>
+            <input type="text" class="cInput" placeholder="平均房价" name="price" id="price">
+        </div>
+        
+        <div class="cLine">
+            <h3>预计稳定经营下平均入住率（%）</h3>
+            <input type="text" class="cInput" placeholder="平均入住率" name="rate" id="rate">
+        </div>
+        
+        <div class="cLine">
+            <h3>土地到期日（年月日）</h3>
+            <select class="cSelect2" name="dueYear" id="dueYear">
+                <option>年</option>
+                {% for i in 2015..2100 %}
+                <option value="{{ i }}">{{ i }}年</option>
+                {% endfor %}
+            </select>
+            
+            <select class="cSelect2" name="dueMonth" id="dueMonth">
+                <option value="">月</option>
+                {% for i in 1..12 %}
+                <option value="{{ i }}">{{ i }}月</option>
+                {% endfor %}
+            </select>
+            
+            <select class="cSelect2" name="dueDay" id="dueDay">
+                <option>日</option>
+                {% for i in 1..31 %}
+                <option value="{{ i }}">{{ i }}日</option>
+                {% endfor %}
+            </select>
+            <a href="javascript:void(0);" class="btnB" style="margin:40px 0 0 0;" id="submit">查询</a>
+        </div>
+        <input type="hidden" value="{{ app.request.get('type') }}" name="type" />
+        <input type="hidden" value="{{ app.request.get('status') }}" name="status" />
+        </form>
+    </div>
+    
+    <div class="blackBg">
+        <div id="data">
+        <div class="cInfo">
+            <div class="ciLine" style="text-align:center;">请输入或选择对应项</div>
+        </div>
+        </div>
+        
+        <div class="bottomLink3"><a href="#">特别免责申明</a></div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+    $('#submit').click(function(){
+        var data = $('#form').serializeArray();
+        $.post($('#form').attr('action'),data,function(html){
+            $('#data').html(html);
+        })
+        return false;
+    })
+    </script>
+{% endblock %}

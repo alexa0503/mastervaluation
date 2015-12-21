@@ -1,0 +1,48 @@
+{% extends 'AppBundle:default:layout.html.twig' %}
+{% block content %}
+   <div class="topTitle">
+    	{% if app.request.get('status') == 'completed' %}完工价值测算{% else %}假设完工价值测算{% endif %}
+    </div>
+    
+    <h2 class="subTitle">请选择物业类型</h2>
+    <form action="{{ url('_measuring') }}" method="post" id="form">
+        <div class="selBlock">
+        	<div class="selLine">
+            	<label><input type="checkbox" name="type[]" value="1">写字楼</label>
+            </div>
+            <div class="selLine">
+            	<label><input type="checkbox" name="type[]" value="2">商业</label>
+            </div>
+            <div class="selLine">
+            	<label><input type="checkbox" name="type[]" value="3">酒店</label>
+            </div>
+            <div class="selLine">
+            	<label><input type="checkbox" name="type[]" value="4">服务式公寓</label>
+            </div>
+            <div class="selLine">
+            	<label><input type="checkbox" name="type[]" value="5">物流仓储</label>
+            </div>
+            {% if app.request.get('status') != 'completed' %}
+            <div class="selLine">
+                <label><input type="checkbox" name="type[]" value="6">住宅</label>
+            </div>
+            {% endif %}
+        </div>
+        
+        <p class="selNote">备注：根据收益法原理测算价值。（可多选）</p>
+        
+        <div class="selBtn">
+        	<a href="javascript:void(0);" class="btnB">开始测算</a>
+        </div>
+        <input type="hidden" value="{{ app.request.get('status') }}" name="status">
+    </form>
+    
+    <div class="bottomLink2"><a href="#">特别免责申明</a></div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        $('.btnB').click(function(){
+            $('#form').submit();
+        })
+    </script>
+{% endblock %}
