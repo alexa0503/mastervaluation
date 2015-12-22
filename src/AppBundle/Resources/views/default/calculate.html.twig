@@ -1,0 +1,36 @@
+<div class="cInfo"><div class="ciLine">毛资本化率：{{ rate*100 }}%</div>
+            <div class="ciLine">测算结果（人民币）：{{ amount_price | number_format(0,'.',',') }}</div>
+            <div class="ciLine">单价（元/平方米）：{{ price | number_format(0,'.',',') }}</div>
+            <div class="ciLine">评估时间：{{ due_time | date('j/m/y')}}</div>
+            <div class="ciLine">敏感性分析：<font class="grayFont">（纵轴租金变化率/横轴收益率）</font></div>
+        </div>
+        <div class="cBr"></div>
+        
+        <div class="scrollBlock">
+            <table>
+                <tr>
+                    <th width="100">&nbsp;</th>
+                    <th>{{ (rate*100 - 1) | number_format(2) }}%</th>
+                    <th>{{ (rate*100 - 0.5) | number_format(2) }}%</th>
+                    <th>{{ rate*100 | number_format(2) }}%</th>
+                    <th>{{ (rate*100 + 0.5) | number_format(2) }}%</th>
+                    <th>{{ (rate*100 + 1) | number_format(2) }}%</th>
+                </tr>
+                {% for rows in data %}
+                    <tr>
+                        <td>{{ rate2[loop.index0]*100 }}%</td>
+                        <td>{{ rows[0] | number_format(0,'.',',') }}</td>
+                        <td>{{ rows[1] | number_format(0,'.',',') }}</td>
+                        <td {% if loop.index0 ==2 %} class="redTd"{% endif %}>{{ rows[2] | number_format(0,'.',',') }}</td>
+                        <td>{{ rows[3] | number_format(0,'.',',') }}</td>
+                        <td>{{ rows[4] | number_format(0,'.',',') }}</td>
+                    </tr>
+                {% endfor %}
+                
+            </table>
+        </div>
+        
+        <div class="cBr"></div>
+        <div class="selBtn2">
+            <a href="javascript:void(0);" class="btnB">继续</a>
+        </div>

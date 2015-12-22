@@ -63,6 +63,10 @@ class DefaultController extends Controller
 		$standard = $request->get('standard') ? : 1;
 		$layer = $request->get('layer') ? : 1;
 		$area = $request->get('area') ? : 1;
+        $average_rent = $request->get('averageRent') ? : 1;
+        $due_year = $request->get('dueYear') ? : date('Y');
+        $due_month = $request->get('dueMonth') ? : date('m');
+        $due_day = $request->get('dueDay') ? : date('d');
 		$repository = $this->getDoctrine()->getRepository('AppBundle:Rate');
 		$result = $repository->findOneBy(array('grade'=>$grade,
 			'regional'=>$regional,
@@ -75,77 +79,33 @@ class DefaultController extends Controller
         if( null == $result ){
             return new Response('参数不正确，无法计算');
         }
-		$rate = $result->getRate();
-		$data = '
-				<div class="cInfo">
-            <div class="ciLine">单房收益（人民币）：2234</div>
-            <div class="ciLine">净资本化率：'.$rate.'%</div>
-            <div class="ciLine">测算结果（人民币）：266,800,000</div>
-            <div class="ciLine">单价（元/平方米）：15546</div>
-            <div class="ciLine">评估时间：8/21/15</div>
-            <div class="ciLine">敏感性分析：<font class="grayFont">（纵轴租金变化率/横轴收益率）</font></div>
-        </div>
-        <div class="cBr"></div>
-        
-        <div class="scrollBlock">
-            <table>
-                <tr>
-                    <th width="100">&nbsp;</th>
-                    <th>4.00%</th>
-                    <th>4.50%</th>
-                    <th>5.00%</th>
-                    <th>5.50%</th>
-                    <th>6.00%</th>
-                </tr>
-                <tr>
-                    <td>10%</td>
-                    <td>619,600,000</td>
-                    <td>583,400,000</td>
-                    <td>550,400,000</td>
-                    <td>520,100,000</td>
-                    <td>520,100,000</td>
-                </tr>
-                <tr>
-                    <td>5%</td>
-                    <td>619,600,000</td>
-                    <td>583,400,000</td>
-                    <td>550,400,000</td>
-                    <td>520,100,000</td>
-                    <td>520,100,000</td>
-                </tr>
-                <tr>
-                    <td>0</td>
-                    <td>619,600,000</td>
-                    <td class="redTd">583,400,000</td>
-                    <td>550,400,000</td>
-                    <td>520,100,000</td>
-                    <td>520,100,000</td>
-                </tr>
-                <tr>
-                    <td>-5%</td>
-                    <td>619,600,000</td>
-                    <td>583,400,000</td>
-                    <td>550,400,000</td>
-                    <td>520,100,000</td>
-                    <td>520,100,000</td>
-                </tr>
-                <tr>
-                    <td>-10%</td>
-                    <td>619,600,000</td>
-                    <td>583,400,000</td>
-                    <td>550,400,000</td>
-                    <td>520,100,000</td>
-                    <td>520,100,000</td>
-                </tr>
-            </table>
-        </div>
-        
-        <div class="cBr"></div>
-        <div class="selBtn2">
-            <a href="javascript:void(0);" class="btnB">继续</a>
-        </div>
-        ';
-    return new Response($data);
-		//return $this->render('AppBundle:default:measuring.html.twig', array('data'=>$data));
+		$rate = $result->getRate()*0.01;
+        $due_time = strtotime($due_year.'-'.$due_month.'-'.$due_day);
+        $d = floor(($due_time-strtotime(date('Y-m-d')))/86400);
+
+        if( 0 == $d ){
+            return new Response('参数不正确，无法计算');
+        }
+        $amount_price = round($average_rent*$area*12/$rate*(1-1/pow((1+$rate),$d/365)),-5);
+        $price = round($amount_price/$area,0);
+        $rate2 = array(0.1,0.05,0,-0.05,-0.1);
+        for ($i=0; $i < 5; $i++) { 
+            $_rate[$i] = $rate + 0.005*($i - 2);
+            //$_rate[$i] = $rate;
+            for ($j=0; $j < 5; $j++) { 
+                $data[$i][$j] = round($average_rent*$area*(1+$rate2[$j])*12/$_rate[$i]*(1-1/pow((1+$_rate[$i]),$d/365)),-5);
+                //$data[$i][$j] = round($average_rent*$area*(1+$rate2[$j])*12/$rate[$i]*(1-1/pow((1+$_rate[$i]),$d/365)),-5);
+            }
+        }
+		
+        //return new Response($data);
+		return $this->render('AppBundle:default:calculate.html.twig', array(
+            'due_time'=>$due_time,
+            'amount_price'=>$amount_price,
+            'price'=>$price,
+            'rate'=>$rate,
+            'data'=>$data,
+            'rate2'=>$rate2,
+        ));
 	}
 }
