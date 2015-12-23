@@ -1,0 +1,63 @@
+/* Global Setting */
+body{margin:0; padding:0;text-align:left; font-size:12px; font-family:Arial; background:#f1ede6;}
+table{border-collapse:collapse;}
+td,th{padding:0;}
+ul,li,dd,dl,dt{margin:0; padding:0; list-style:none; word-break:break-all;}
+img{border:0;}
+p{margin:0; padding:0; word-break:break-all;}
+h1,h2,h3,h4{margin:0; padding:0; line-height:100%; font-weight:normal; font-size:14px;}
+em{ font-size:12px; font-style:normal;}
+hr{background:none;border:none;border-bottom:1px solid #CCC;#border-bottom:0;}
+.clear {clear:both;height:0;font-size:1px;line-height: 0px;}
+a{text-decoration:none; border:0; outline:none; blr:expression(this.onFocus=this.blur());}
+select,input,textarea{font-family:inherit; outline:none;}
+
+.wrapper{ width:640px; margin:0 auto; border:none; padding:0;}
+.innerDiv{ width:100%; height:100%; position:relative;}
+.abs{ position:absolute;}
+
+.topTitle{ background:url(../images/topBar.jpg) 0 0 no-repeat; width:525px; height:68px; padding:35px 0 0 115px; color:#FFF; font-size:24px; font-weight:bold;}
+.btnA{ background:url(../images/btn1.png) 0 0 no-repeat; width:272px; height:123px; line-height:122px; text-align:center; color:#000; font-size:24px; font-weight:bold; display:inline-block;}
+.indexBtn1{ position:fixed; left:50%; top:50%; margin-left:-284px; margin-top:-62px;}
+.indexBtn2{ position:fixed; left:50%; top:50%; margin-left:14px; margin-top:-62px;}
+.bottomLink{ position:fixed; left:50%; bottom:30px; width:640px; margin-left:-320px; text-align:center;}
+.bottomLink a{ font-size:18px; color:#7d7d7d; font-weight:bold;}
+
+.subTitle{ text-align:center; font-size:24px; color:#7d7d7d; font-weight:bold; padding:70px 0 60px 0; width:640px; text-align:center;}
+.selBlock{ padding:0 0 30px 225px;}
+.selLine{ padding:0 0 35px 0;}
+.selLine label{ color:#000; line-height:24px; font-size:24px;}
+.selLine input{ margin-right:60px;}
+.selNote{ width:640px; text-align:center; font-size:18px; color:#7d7d7d; font-weight:bold; padding-bottom:80px;}
+.selBtn{ text-align:center;}
+.btnB{ background:url(../images/btn2.png) 0 0 no-repeat; width:613px; height:123px; line-height:122px; text-align:center; color:#000; font-size:24px; font-weight:bold; display:inline-block;}
+.bottomLink2{ width:640px; text-align:center; padding:115px 0 30px 0;}
+.bottomLink2 a{ font-size:18px; color:#7d7d7d; font-weight:bold;}
+
+.cMain{ padding:20px 0 120px 0;}
+.cLine{ padding:25px 0 0 33px;}
+.cLine h3{ font-size:18px; padding:0 0 20px 0; font-weight:bold; color:#7d7d7d;}
+.cInput{ display:inline-block; width:510px; height:84px; line-height:84px; background:#FFF; border:1px solid #c5b399; font-size:24px; color:#000; padding:0 30px; font-weight:bold;}
+/*.cSelect{ display:inline-block; width:570px; height:84px; line-height:84px; background:#FFF; border:1px solid #c5b399; font-size:24px; color:#000; padding-left:34px; font-weight:bold; vertical-align:middle; box-shadow:none; -webkit-appearance:none; -moz-appearance:none; appearance:none;}*/
+.cSelect{ display:inline-block; width:570px; height:84px; line-height:84px; background:#FFF; border:1px solid #c5b399; font-size:24px; color:#000; font-weight:bold; vertical-align:middle; box-shadow:none; -webkit-appearance:none; -moz-appearance:none; appearance:none;}
+.cSelect2{ display:inline-block; width:175px; height:84px; line-height:84px; background:#FFF; border:1px solid #c5b399; font-size:24px; color:#000; padding-left:34px; font-weight:bold; vertical-align:middle; box-shadow:none; -webkit-appearance:none; -moz-appearance:none; appearance:none; margin-right:19px;}
+.blackBg{ width:640px; background:#000; padding-top:60px;}
+.ciLine{ padding:0 0 35px 35px; color:#c5b399; font-size:18px; font-weight:bold;}
+.grayFont{ color:#adaaaa;}
+.cBr{ width:510px; height:3px; background:#494238; margin:0 auto 30px auto;}
+.scrollBlock{ overflow-y:hidden; overflow-x:auto;}
+.scrollBlock table th{ text-align:center; padding-bottom:24px; color:#c5b399; font-size:18px; font-weight:bold;}
+.scrollBlock table td{ text-align:center; padding:0 15px 24px 15px; color:#c5b399; font-size:18px; font-weight:bold;}
+.scrollBlock table td.redTd{ color:#ff1d77;}
+.selBtn2{ text-align:center; padding:30px 0 0 0;}
+.bottomLink3{ width:640px; text-align:center; padding:30px 0 30px 0;}
+.bottomLink3 a{ font-size:18px; color:#7d7d7d; font-weight:bold;}
+
+
+.testTitle{ padding:30px 0; width:640px; text-align:center; font-size:24px; color:#000; font-weight:bold;}
+.blackBg2{ width:640px; background:#000; padding-top:60px; margin-top:-1px;}
+
+.popBg{ position:fixed; left:0; top:0; width:100%; height:100%; background:#000; filter:alpha(opacity=80); -moz-opacity:0.8; opacity:0.8;}
+.popNote{ width:640px; position:fixed; left:50%; top:0; margin-left:-320px;}
+.noteTitle{ padding:160px 0 80px 0; font-size:24px; color:#FFF; font-weight:bold; width:100%; text-align:center; line-height:100%;}
+.noteContent{ padding:0 0 0 65px; font-size:18px; color:#adaaaa; font-weight:bold; width:575px; text-align:left; line-height:36px;}
