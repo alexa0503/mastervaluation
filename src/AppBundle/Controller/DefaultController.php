@@ -35,6 +35,9 @@ class DefaultController extends Controller
 	{
 		$session = $request->getSession();
 		$session->set('type',null);
+		for ($i=1; $i < 8; $i++) { 
+			$result[] = $session->set('calculate_'.$i,null);
+		}
 		return $this->render('AppBundle:default:types.html.twig');
 	}
 	/**
