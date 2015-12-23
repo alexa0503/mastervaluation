@@ -17,6 +17,7 @@
             </select>
         </div>
 
+        {% if type.id == 1 or type.id == 2 or type.id == 3 or type.id == 4 %}
         <div class="cLine">
             <h3>区域</h3>
             <select class="cSelect" id="regional" name="regional">
@@ -26,7 +27,10 @@
                 <option value="3">一般区域</option>
             </select>
         </div>
+        {% endif %}
 
+        {% if type.id == 1 %}
+        <!-- 写字楼 -->
         <div class="cLine">
             <h3>写字楼等级</h3>
             <select class="cSelect" name="standard">
@@ -36,52 +40,86 @@
                 <option value="3">乙级</option>
             </select>
         </div>
+        {% endif %}
         
         <div class="cLine">
-            <h3>总建筑面积（平方米）如无资料可空白仅计算单价</h3>
+            <h3>{% if app.request.get('status') != 'completed' %}规划{% else %}总{% endif %}建筑面积（平方米）如无资料可空白仅计算单价</h3>
             <input type="text" class="cInput" placeholder="1" name="area">
         </div>
+        {% if type.id == 5 %}
+        <div class="cLine">
+            <h3>标准</h3>
+            <select class="cSelect" name="standard">
+                <option value="">请选择写字楼标准</option>
+                <option value="1">国际标准库</option>
+                <option value="2">普通标准库</option>
+            </select>
+        </div>
         
         <div class="cLine">
-            <h3>总体平均租金（元/平米/月），基于总建筑面积</h3>
+            <h3>层数</h3>
+            <select class="cSelect" name="layer">
+                <option value="">请选择写字楼层数</option>
+                <option value="1">单层</option>
+                <option value="2">双层</option>
+                <option value="3">多层</option>
+            </select>
+        </div>
+        {% endif %}
+
+        {% if type.id == 1 or type.id == 2 or type.id == 5 or type.id == 6 %}
+        <!-- 写字楼,商业 -->
+        
+        <div class="cLine">
+            <h3>{% if app.request.get('status') != 'completed' %}预计{% endif %}总体平均租金（元/平米/月），基于总建筑面积</h3>
             <input type="text" class="cInput" placeholder="总体平均租金" name="averageRent">
         </div>
-        <!--
-        
+        {% endif %}
+
+
+        {% if type.id == 3 or type.id == 4 %}
+        <!-- 酒店,服务式公寓 -->
+        {% if type.id == 3 %}
         <div class="cLine">
-            <h3>规划建筑面积（平方米）如无资料可空白仅计算单价</h3>
-            <input type="text" class="cInput" placeholder="1" name="area" id="area">
+            <h3>酒店等级</h3>
+            <select class="cSelect" name="hotelGrade">
+                <option value="">请选择酒店等级</option>
+                <option value="1">五星</option>
+                <option value="2">四星</option>
+                <option value="3">三星</option>
+                <option value="4">经济型</option>
+            </select>
         </div>
-        
+        {% else %}
         <div class="cLine">
             <h3>服务式公寓品牌</h3>
-            <select class="cSelect" id="brand" name="brand">
+            <select class="cSelect" name="hotelGrade">
                 <option value="">请选择公寓品牌</option>
                 <option value="1">国际</option>
                 <option value="2">国内</option>
             </select>
         </div>
-        
+        {% endif %}
         <div class="cLine">
             <h3>房间数</h3>
-            <input type="text" class="cInput" placeholder="房间数" id="roomNumber" name="roomNumber">
+            <input type="text" class="cInput" placeholder="房间数" name="roomNumber">
         </div>
         
         <div class="cLine">
-            <h3>预计平均房价（人民币）</h3>
-            <input type="text" class="cInput" placeholder="平均房价" name="price" id="price">
+            <h3>平均房价（人民币）</h3>
+            <input type="text" class="cInput" placeholder="平均房价" name="roomPrice">
         </div>
         
         <div class="cLine">
-            <h3>预计稳定经营下平均入住率（%）</h3>
-            <input type="text" class="cInput" placeholder="平均入住率" name="rate" id="rate">
+            <h3>稳定经营下平均入住率（%）</h3>
+            <input type="text" class="cInput" placeholder="平均入住率" name="roomRate">
         </div>
-        -->
+        {% endif %}
         
         <div class="cLine">
             <h3>土地到期日（年月日）</h3>
             <select class="cSelect2" name="dueYear" id="dueYear">
-                <option>年</option>
+                <option value="">年</option>
                 {% for i in 2015..2100 %}
                 <option value="{{ i }}">{{ i }}年</option>
                 {% endfor %}
@@ -95,13 +133,15 @@
             </select>
             
             <select class="cSelect2" name="dueDay" id="dueDay">
-                <option>日</option>
+                <option value="">日</option>
                 {% for i in 1..31 %}
                 <option value="{{ i }}">{{ i }}日</option>
                 {% endfor %}
             </select>
-            <a href="javascript:void(0);" class="btnB" style="margin:40px 0 0 0;" id="submit">查询</a>
         </div>
+            <div class="selBtn2">
+                <a href="javascript:void(0);" class="btnB" style="margin:40px 0 0 0;" id="submit">查询</a>
+            </div>
         <input type="hidden" value="{{ type.id }}" name="type" />
         <input type="hidden" value="{{ app.request.get('status') }}" name="status" />
         </form>
@@ -114,7 +154,7 @@
         </div>
         </div>
         
-        <div class="bottomLink3"><a href="#">特别免责申明</a></div>
+        <div class="bottomLink3"><a href="javascript:void(0);" onClick="showNote();">特别免责申明</a></div>
     </div>
 {% endblock %}
 {% block javascripts %}
@@ -126,5 +166,8 @@
         })
         return false;
     })
+    $('#grade').select2({
+        width: '570px'
+      });
     </script>
 {% endblock %}

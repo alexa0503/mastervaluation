@@ -1,3 +1,10 @@
+<div class="testBlock">
+        <div class="testTitle">
+            {{ type.title }}
+        </div>
+        
+        <div class="blackBg">
+
 <div class="cInfo">
     {% if type.id == 1 or type.id == 2 or type.id == 5 %}
     <div class="ciLine">毛资本化率：{{ rate*100 }}%</div>
@@ -44,7 +51,6 @@
 </div>
 <div class="cBr"></div>
 {% endif %}
-
-<div class="selBtn2">
-    <a href="{{ url('_measuring') }}" class="btnB">继续</a>
+        </div>
 </div>
+    

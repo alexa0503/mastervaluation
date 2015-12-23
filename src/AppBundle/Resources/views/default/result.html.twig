@@ -1,0 +1,14 @@
+{% extends 'AppBundle:default:layout.html.twig' %}
+{% block content %}
+   <div class="topTitle">
+    	测算结果汇总
+    </div>
+    {{ result | raw }}
+    <div class="blackBg2">
+    	<div class="selBtn2">
+            <a href="{{ url('_index') }}" class="btnB">重新测试</a>
+        </div>
+        
+        <div class="bottomLink3"><a href="javascript:void(0);" onClick="showNote();">特别免责申明</a></div>
+    </div>
+{% endblock %}
