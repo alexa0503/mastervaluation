@@ -22,7 +22,7 @@
             <div class="selLine">
             	<label><input type="checkbox" name="type[]" value="5">物流仓储</label>
             </div>
-            {% if app.request.get('status') != 'completed' %}
+            {% if app.request.get('status') != 1 %}
             <div class="selLine">
                 <label><input type="checkbox" name="type[]" value="6">住宅</label>
             </div>
