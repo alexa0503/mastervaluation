@@ -20,7 +20,7 @@
         {% if type.id == 1 or type.id == 2 or type.id == 3 or type.id == 4 %}
         <div class="cLine">
             <h3>区域</h3>
-            <select class="cSelect" id="regional" name="regional">
+            <select class="cSelect required" id="regional" name="regional">
                 <option value="">请选择区域</option>
                 <option value="1">城市核心区</option>
                 <option value="2">区域核心区</option>
@@ -33,7 +33,7 @@
         <!-- 写字楼 -->
         <div class="cLine">
             <h3>写字楼等级</h3>
-            <select class="cSelect" name="standard">
+            <select class="cSelect required" name="standard">
                 <option value="">请选择写字楼等级</option>
                 <option value="1">超甲</option>
                 <option value="2">甲级</option>
@@ -49,7 +49,7 @@
         {% if type.id == 5 %}
         <div class="cLine">
             <h3>标准</h3>
-            <select class="cSelect" name="standard">
+            <select class="cSelect required" name="standard">
                 <option value="">请选择写字楼标准</option>
                 <option value="1">国际标准库</option>
                 <option value="2">普通标准库</option>
@@ -58,7 +58,7 @@
         
         <div class="cLine">
             <h3>层数</h3>
-            <select class="cSelect" name="layer">
+            <select class="cSelect required" name="layer">
                 <option value="">请选择写字楼层数</option>
                 <option value="1">单层</option>
                 <option value="2">双层</option>
@@ -72,7 +72,7 @@
         
         <div class="cLine">
             <h3>{% if app.request.get('status') != 'completed' %}预计{% endif %}总体平均租金（元/平米/月），基于总建筑面积</h3>
-            <input type="text" class="cInput" placeholder="总体平均租金" name="averageRent">
+            <input type="text" class="cInput required" placeholder="总体平均租金" name="averageRent">
         </div>
         {% endif %}
 
@@ -82,7 +82,7 @@
         {% if type.id == 3 %}
         <div class="cLine">
             <h3>酒店等级</h3>
-            <select class="cSelect" name="hotelGrade">
+            <select class="cSelect required" name="hotelGrade">
                 <option value="">请选择酒店等级</option>
                 <option value="1">五星</option>
                 <option value="2">四星</option>
@@ -93,7 +93,7 @@
         {% else %}
         <div class="cLine">
             <h3>服务式公寓品牌</h3>
-            <select class="cSelect" name="hotelGrade">
+            <select class="cSelect required" name="hotelGrade">
                 <option value="">请选择公寓品牌</option>
                 <option value="1">国际</option>
                 <option value="2">国内</option>
@@ -102,37 +102,37 @@
         {% endif %}
         <div class="cLine">
             <h3>房间数</h3>
-            <input type="text" class="cInput" placeholder="房间数" name="roomNumber">
+            <input type="text" class="cInput required" placeholder="房间数" name="roomNumber">
         </div>
         
         <div class="cLine">
             <h3>平均房价（人民币）</h3>
-            <input type="text" class="cInput" placeholder="平均房价" name="roomPrice">
+            <input type="text" class="cInput required" placeholder="平均房价" name="roomPrice">
         </div>
         
         <div class="cLine">
             <h3>稳定经营下平均入住率（%）</h3>
-            <input type="text" class="cInput" placeholder="平均入住率" name="roomRate">
+            <input type="text" class="cInput required" placeholder="平均入住率" name="roomRate">
         </div>
         {% endif %}
         
         <div class="cLine">
             <h3>土地到期日（年月日）</h3>
-            <select class="cSelect2" name="dueYear" id="dueYear">
+            <select class="cSelect2 required" name="dueYear" id="dueYear">
                 <option value="">年</option>
                 {% for i in 2015..2100 %}
                 <option value="{{ i }}">{{ i }}年</option>
                 {% endfor %}
             </select>
             
-            <select class="cSelect2" name="dueMonth" id="dueMonth">
+            <select class="cSelect2 required" name="dueMonth" id="dueMonth">
                 <option value="">月</option>
                 {% for i in 1..12 %}
                 <option value="{{ i }}">{{ i }}月</option>
                 {% endfor %}
             </select>
             
-            <select class="cSelect2" name="dueDay" id="dueDay">
+            <select class="cSelect2 required" name="dueDay" id="dueDay">
                 <option value="">日</option>
                 {% for i in 1..31 %}
                 <option value="{{ i }}">{{ i }}日</option>
@@ -159,15 +159,29 @@
 {% endblock %}
 {% block javascripts %}
     <script type="text/javascript">
-    $('#submit').click(function(){
-        var data = $('#form').serializeArray();
-        $.post($('#form').attr('action'),data,function(html){
-            $('#data').html(html);
-        })
-        return false;
-    })
     $('#grade').select2({
         width: '570px'
       });
+    $('#submit').click(function(){
+        var hasFill = true;
+        var data = $('#form').serializeArray();
+        $('#form').find('.required').each(function(){
+            if($(this).val() == ''){
+                hasFill = false;
+            }
+        })
+        if($('#grade').val() == '')
+            hasFill = false;
+        if( hasFill == false){
+            alert('请填写或者完整信息')
+        }
+        else {
+          $.post($('#form').attr('action'),data,function(html){
+                $('#data').html(html);
+            })  
+        }
+        
+        return false;
+    })
     </script>
 {% endblock %}
