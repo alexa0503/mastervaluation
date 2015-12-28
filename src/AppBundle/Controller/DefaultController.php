@@ -37,7 +37,9 @@ class DefaultController extends Controller
 		$session->set('type',null);
 		for ($i=1; $i < 8; $i++) { 
 			$result[] = $session->set('calculate_'.$i,null);
+			$result[] = $session->set('amount_price_'.$i,0);
 		}
+		$session->set('amount_price', 0);
 		return $this->render('AppBundle:default:types.html.twig');
 	}
 	/**
@@ -53,14 +55,27 @@ class DefaultController extends Controller
 			return $this->redirectToRoute('_result');
 		}
 		$type = $session->get('type');
-		$type_id = array_shift($type);
-		$session->set('calculate_'.$type_id,null);
-		$session->set('type',$type);
+		$type_id = current($type);
+		//$type_id = array_shift($type);
+		//$session->set('calculate_'.$type_id,null);
+		//$session->set('type',$type);
+		$amount_price = 0;
+		for ($i=1; $i < 7; $i++) { 
+			if( null != $session->get('amount_price_'.$i))
+				$amount_price += $session->get('amount_price_'.$i);
+		}
+		$session->set('amount_price', $amount_price);
+
 		$result_type = $this->getDoctrine()->getRepository('AppBundle:Type')->find($type_id);
 		$cities =  $this->getDoctrine()->getRepository('AppBundle:City')->findAll();
+		if($type_id == 2)
+			$date1 = array(date('Y')+45,date('n'),date('j'));
+		else
+			$date1 = array(date('Y')+60,date('n'),date('j'));
 		return $this->render('AppBundle:default:measuring.html.twig',array(
 			'cities'=> $cities,
 			'type'=> $result_type,
+			'date1' => $date1,
 			));
 	}
 	/**
@@ -127,7 +142,7 @@ class DefaultController extends Controller
 				$hotel_grade = $request->get('hotelGrade') ? : 1;
 				$room_number = $request->get('roomNumber') ? : 1;
 				$room_price = $request->get('roomPrice') ? : 1;
-				$room_rate = $request->get('roomRate') ? : 1;
+				$room_rate = $request->get('roomRate') ? (int)$request->get('roomRate') : 1;
 				if( $type == 3){
 					switch ($hotel_grade) {
 						case 1:
@@ -163,14 +178,14 @@ class DefaultController extends Controller
 					}
 				}
 				
-				$price1 = $room_price*$room_rate;
-				$amount_price = round($price1*$room_number*365/$rate1*$rate2/$rate*(1-1/pow((1+$rate),$d/365)),-5);
-				$price = round($amount_price/$room_number,0);
+				$price1 = $room_price*$room_rate/100;
+				$amount_price = $price1*$room_number*365/$rate1*$rate2/$rate*(1-1/pow((1+$rate),$d/365));
+				$price = $amount_price/$room_number;
 				$rate_increase = array(0.1,0.05,0,-0.05,-0.1);
 				for ($i=0; $i < 5; $i++) { 
 					$_rate[$i] = $rate + 0.005*($i - 2);
 					for ($j=0; $j < 5; $j++) { 
-						$data[$i][$j] = round($price1*(1+$rate_increase[$j])*$room_number*365/$rate1*$rate2/$_rate[$i]*(1-1/pow((1+$_rate[$i]),$d/365)),-5);
+						$data[$i][$j] = $price1*(1+$rate_increase[$j])*$room_number*365/$rate1*$rate2/$_rate[$i]*(1-1/pow((1+$_rate[$i]),$d/365));
 					}
 				}
 			break;
@@ -182,18 +197,48 @@ class DefaultController extends Controller
 				$data = array();
 				break;
 
-			default:
-			$amount_price = round($average_rent*$area*12/$rate*(1-1/pow((1+$rate),$d/365)),-5);
-			$price = round($amount_price/$area,0);
-			$rate_increase = array(0.1,0.05,0,-0.05,-0.1);
-			for ($i=0; $i < 5; $i++) { 
-				$_rate[$i] = $rate + 0.005*($i - 2);
-				for ($j=0; $j < 5; $j++) { 
-					$data[$i][$j] = round($average_rent*$area*(1+$rate_increase[$j])*12/$_rate[$i]*(1-1/pow((1+$_rate[$i]),$d/365)),-5);
+			case 7:
+				$completion_rate = $request->get('completionRate') ? (int)$request->get('completionRate')*0.01 : 1;
+				$total_costs = $request->get('totalCosts') ? : 1;
+				$c17 = $d/365;
+				if($d < 365){
+					$rate = 0.435;
 				}
-			}
-			break;
+				elseif ($d < 365*2) {
+					$rate = 0.475;
+				}
+				else{
+					$rate = 0.49;
+				}
+				$amount_price = $session->get('amount_price')*0.93-$total_costs*(1-$completion_rate)*1.05-$total_costs*(1-$completion_rate)*1.05*pow((1+$rate),$c17*0.5-1)-$total_costs*(1-$completion_rate*1.05*0.1*$c17)/(1+0.1*$c17+(pow(1+$rate,$c17-1)));
+				//C2×0.93−C8×(1−C10)×(1.05)−C8×(1−C10)×(1.05)×((1+B22)^(C17×0.5)−1)−C8×(1−C10)×(1.05)×10%×C17)÷(1+10%×C17+((1+B22)^C17−1))
+				$price = $amount_price/$session->get('amount_price');
+				$rate_increase = array(0.1,0.05,0,-0.05,-0.1);
+				$data = array();
+				break;
+
+			default:
+				$amount_price = $average_rent*$area*12/$rate*(1-1/pow((1+$rate),$d/365));
+				$price = $amount_price/$area;
+				$rate_increase = array(0.1,0.05,0,-0.05,-0.1);
+				for ($i=0; $i < 5; $i++) { 
+					$_rate[$i] = $rate + 0.005*($i - 2);
+					for ($j=0; $j < 5; $j++) { 
+						$data[$i][$j] = $average_rent*$area*(1+$rate_increase[$j])*12/$_rate[$i]*(1-1/pow((1+$_rate[$i]),$d/365));
+					}
+				}
+				break;
 		}
+
+		$types = $session->get('type');
+		foreach ($types as $key => $value) {
+			if($value == $type){
+				unset($types[$key]);
+			}
+			//$session->set('calculate_'.$value,null);
+			$session->set('type',$types);
+		}
+
 		$result_type = $this->getDoctrine()->getRepository('AppBundle:Type')->find($type);
 		$return =  $this->render('AppBundle:default:calculate_result.html.twig', array(
 			'due_time'=>$due_time,
@@ -207,6 +252,8 @@ class DefaultController extends Controller
 			));
 		$result = $return->getContent();
 		$session->set('calculate_'.$result_type->getId(),$result);
+		$session->set('amount_price_'.$result_type->getId(),$amount_price);
+
 		
 		return $this->render('AppBundle:default:calculate.html.twig', array(
 			'due_time'=>$due_time,

@@ -1,7 +1,7 @@
 {% extends 'AppBundle:default:layout.html.twig' %}
 {% block content %}
    <div class="topTitle">
-    	{% if app.request.get('status') == 'completed' %}完工价值测算{% else %}假设完工价值测算{% endif %}
+    	{% if app.request.get('status') == '1' %}完工物业价值测算{% else %}假设完工价值测算{% endif %}
     </div>
     
     <h2 class="subTitle">请选择物业类型</h2>
@@ -25,6 +25,7 @@
             {% if app.request.get('status') != 1 %}
             <div class="selLine">
                 <label><input type="checkbox" name="type[]" value="6">住宅</label>
+                <input type="hidden" name="type[]" value="7">
             </div>
             {% endif %}
         </div>
