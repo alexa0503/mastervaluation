@@ -18,7 +18,7 @@
         <div class="ciLine">测算结果（人民币）：{{ amount_price | number_format(0,'.',',') }}</div>
         <div class="ciLine">单价（元/平方米）：{{ price | number_format(0,'.',',') }}</div>
         {% endif %}
-        <div class="ciLine">评估时间：{{ due_time | date('Y/m/d')}}</div>
+        <div class="ciLine">评估时间：{{ '' | date('Y/m/d')}}</div>
         {% if type.id <= 5 and type.id >= 1 %}
         <div class="ciLine">敏感性分析：<font class="grayFont">（纵轴租金变化率/横轴收益率）</font></div>
         {% endif %}
