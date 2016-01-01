@@ -69,9 +69,11 @@ class DefaultController extends Controller
 		$result_type = $this->getDoctrine()->getRepository('AppBundle:Type')->find($type_id);
 		$cities =  $this->getDoctrine()->getRepository('AppBundle:City')->findAll();
 		if($type_id == 2)
-			$date1 = array(date('Y')+45,date('n'),date('j'));
+			$date1 = array(date('Y')+40,date('n'),date('j'));
+		elseif($type_id == 7)
+			$date1 = array(date('Y')+2,date('n'),date('j'));
 		else
-			$date1 = array(date('Y')+60,date('n'),date('j'));
+			$date1 = array(date('Y')+50,date('n'),date('j'));
 		return $this->render('AppBundle:default:measuring.html.twig',array(
 			'cities'=> $cities,
 			'type'=> $result_type,
@@ -114,6 +116,7 @@ class DefaultController extends Controller
 		$due_month = $request->get('dueMonth') ? : date('m');
 		$due_day = $request->get('dueDay') ? : date('d');
 		$repository = $this->getDoctrine()->getRepository('AppBundle:Rate');
+		$price2 = 0;
 		$result = $repository->findOneBy(array('grade'=>$grade,
 			'regional'=>$regional,
 			//'status'=>$status,
@@ -182,6 +185,7 @@ class DefaultController extends Controller
 				$amount_price = $price1*$room_number*365/$rate1*$rate2/$rate*(1-1/pow((1+$rate),$d/365));
 				$price = $amount_price/$room_number;
 				$rate_increase = array(0.1,0.05,0,-0.05,-0.1);
+				$price2 = $amount_price/$area;
 				for ($i=0; $i < 5; $i++) { 
 					$_rate[$i] = $rate + 0.005*($i - 2);
 					for ($j=0; $j < 5; $j++) { 
@@ -202,16 +206,25 @@ class DefaultController extends Controller
 				$total_costs = $request->get('totalCosts') ? : 1;
 				$c17 = $d/365;
 				if($d < 365){
-					$rate = 0.435;
+					$rate = 0.0435;
 				}
-				elseif ($d < 365*2) {
-					$rate = 0.475;
+				elseif ($d <= 365*2+1) {
+					$rate = 0.0475;
 				}
 				else{
-					$rate = 0.49;
+					$rate = 0.049;
 				}
-				$amount_price = $session->get('amount_price')*0.93-$total_costs*(1-$completion_rate)*1.05-$total_costs*(1-$completion_rate)*1.05*pow((1+$rate),$c17*0.5-1)-$total_costs*(1-$completion_rate*1.05*0.1*$c17)/(1+0.1*$c17+(pow(1+$rate,$c17-1)));
-				//C2×0.93−C8×(1−C10)×(1.05)−C8×(1−C10)×(1.05)×((1+B22)^(C17×0.5)−1)−C8×(1−C10)×(1.05)×10%×C17)÷(1+10%×C17+((1+B22)^C17−1))
+				//c2 = amount_price
+				//c8 = total_costs
+				//c10 = completion_rate;
+				$c2 = $session->get('amount_price');
+				$c8 = $total_costs;
+				$c10 = $completion_rate;
+				$p1 = pow((1+$rate),$c17*0.5);
+				$p2 = pow((1+$rate),$c17);
+				$amount_price = ($c2*0.93-$c8*(1-$c10)*1.05-$c8*(1-$c10)*1.05*($p1-1)-$c8*(1-$c10)*1.05*0.1*$c17)/(1+0.1*$c17+($p2-1));
+				//(C2×0.93−C8×(1−C10)×(1.05)−C8×(1−C10)×(1.05)×(p1−1)−C8×(1−C10)×(1.05)×10%×C17)÷(1+10%×C17+(p2−1))
+				//(C2×0.93−C8×(1−C10)×(1.05)−C8×(1−C10)×(1.05)×((1+B22)^(C17×0.5)−1)−C8×(1−C10)×(1.05)×10%×C17)÷(1+10%×C17+((1+B22)^C17−1))
 				$price = $amount_price/$session->get('amount_price');
 				$rate_increase = array(0.1,0.05,0,-0.05,-0.1);
 				$data = array();
@@ -249,6 +262,7 @@ class DefaultController extends Controller
 			'rate_increase'=>$rate_increase,
 			'type'=>$result_type,
 			'price1'=>$price1,
+			'price2'=>$price2,
 			));
 		$result = $return->getContent();
 		$session->set('calculate_'.$result_type->getId(),$result);
@@ -264,6 +278,7 @@ class DefaultController extends Controller
 			'rate_increase'=>$rate_increase,
 			'type'=>$result_type,
 			'price1'=>$price1,
+			'price2'=>$price2,
 			));;
 	}
 }

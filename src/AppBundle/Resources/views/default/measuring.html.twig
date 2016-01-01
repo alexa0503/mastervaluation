@@ -53,7 +53,7 @@
         <div class="cLine">
             <h3>标准</h3>
             <select class="cSelect required" name="standard">
-                <option value="">请选择写字楼标准</option>
+                <option value="">请选择仓库标准</option>
                 <option value="1">国际标准库</option>
                 <option value="2">普通标准库</option>
             </select>
@@ -62,7 +62,7 @@
         <div class="cLine">
             <h3>层数</h3>
             <select class="cSelect required" name="layer">
-                <option value="">请选择写字楼层数</option>
+                <option value="">请选择仓库层数</option>
                 <option value="1">单层</option>
                 <option value="2">双层</option>
                 <option value="3">多层</option>
@@ -70,12 +70,18 @@
         </div>
         {% endif %}
 
-        {% if type.id == 1 or type.id == 2 or type.id == 5 or type.id == 6 %}
+        {% if type.id == 1 or type.id == 2 or type.id == 5 %}
         <!-- 写字楼,商业 -->
         
         <div class="cLine">
             <h3>{% if app.request.get('status') != '1' %}预计{% endif %}总体平均租金（元/平米/月），基于总建筑面积</h3>
             <input type="text" class="cInput required" placeholder="总体平均租金" name="averageRent">
+        </div>
+        {% endif %}
+        {% if type.id == 6 %}
+        <div class="cLine">
+        <h3>预计平均售价（元/平米）</h3>
+        <input type="text" class="cInput" placeholder="预计平均售价" name="averageRent">
         </div>
         {% endif %}
 
@@ -118,9 +124,9 @@
             <input type="text" class="cInput required" placeholder="平均入住率" name="roomRate">
         </div>
         {% endif %}
-        {% if type.id != 7 %}
+        {% if type.id != 7 and type.id != 6 %}
         <div class="cLine">
-            <h3>土地到期日（年月日）</h3>
+            <h3>土地到期日（年月日）如无资料可按默认日期计算</h3>
             <select class="cSelect2 required" name="dueYear" id="dueYear">
                 <option value="">年</option>
                 {% for i in 2015..2100 %}
@@ -149,25 +155,25 @@
             <input type="text" class="cInput" placeholder="1" value="{{ app.session.get('amount_price') | number_format(0,'.',',') }}" disabled="">
         </div>
         <div class="cLine">
-            <h3>土地到期日（年月日）</h3>
+            <h3>预计竣工日期（年月日）</h3>
             <select class="cSelect2 required" name="dueYear">
                 <option value="">年</option>
                 {% for i in 2015..2100 %}
-                <option value="{{ i }}">{{ i }}年</option>
+                <option value="{{ i }}"{% if date1[0] == i %} selected="selected"{% endif %}>{{ i }}年</option>
                 {% endfor %}
             </select>
             
             <select class="cSelect2 required" name="dueMonth">
                 <option value="">月</option>
                 {% for i in 1..12 %}
-                <option value="{{ i }}">{{ i }}月</option>
+                <option value="{{ i }}"{% if date1[1] == i %} selected="selected"{% endif %}>{{ i }}月</option>
                 {% endfor %}
             </select>
             
             <select class="cSelect2 required" name="dueDay">
                 <option value="">日</option>
                 {% for i in 1..31 %}
-                <option value="{{ i }}">{{ i }}日</option>
+                <option value="{{ i }}"{% if date1[2] == i %} selected="selected"{% endif %}>{{ i }}日</option>
                 {% endfor %}
             </select>
         </div>
@@ -177,7 +183,7 @@
         </div>
         
         <div class="cLine">
-            <h3>完工量</h3>
+            <h3>完工量 (%) 占预计总投入成本百分比</h3>
             <input type="text" class="cInput" placeholder="完工量" name="completionRate">
         </div>
         {% endif %}
