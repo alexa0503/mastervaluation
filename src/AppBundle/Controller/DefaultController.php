@@ -110,8 +110,8 @@ class DefaultController extends Controller
 		$regional = $request->get('regional') ? : 1;
 		$standard = $request->get('standard') ? : 1;
 		$layer = $request->get('layer') ? : 1;
-		$area = $request->get('area') ? : 1;
-		$average_rent = $request->get('averageRent') ? : 1;
+		$area = $request->get('area') ? str_replace(',', '', $request->get('area')) : 1;
+		$average_rent = $request->get('averageRent') ? str_replace(',', '', $request->get('averageRent')) : 1;
 		$due_year = $request->get('dueYear') ? : date('Y');
 		$due_month = $request->get('dueMonth') ? : date('m');
 		$due_day = $request->get('dueDay') ? : date('d');
@@ -144,7 +144,7 @@ class DefaultController extends Controller
 			case 4:
 				$hotel_grade = $request->get('hotelGrade') ? : 1;
 				$room_number = $request->get('roomNumber') ? : 1;
-				$room_price = $request->get('roomPrice') ? : 1;
+				$room_price = $request->get('roomPrice') ? str_replace(',', '', $request->get('roomPrice')) : 1;
 				$room_rate = $request->get('roomRate') ? (int)$request->get('roomRate') : 1;
 				if( $type == 3){
 					switch ($hotel_grade) {
@@ -203,7 +203,7 @@ class DefaultController extends Controller
 
 			case 7:
 				$completion_rate = $request->get('completionRate') ? (int)$request->get('completionRate')*0.01 : 1;
-				$total_costs = $request->get('totalCosts') ? : 1;
+				$total_costs = $request->get('totalCosts') ? str_replace(',', '', $request->get('totalCosts')): 1;
 				$c17 = $d/365;
 				if($d < 365){
 					$rate = 0.0435;
