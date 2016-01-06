@@ -4,7 +4,7 @@
     	{% if app.request.get('status') == '1' %}完工物业价值测算{% else %}假设完工价值测算{% endif %}
     </div>
     
-    <h2 class="subTitle">请选择物业类型</h2>
+    <h2 class="subTitle">请选择物业类型（可多选）</h2>
     <form action="{{ url('_measuring') }}" method="post" id="form">
         <div class="selBlock">
         	<div class="selLine">
@@ -30,7 +30,7 @@
             {% endif %}
         </div>
         
-        <p class="selNote">备注：根据收益法原理测算价值。（可多选）</p>
+        <p class="selNote">备注：{% if app.request.get('status') == 1 %}根据收益法原理测算价值。{% else %}根据“剩余法/假设开发法”原理，先顺序测算所选各物业类型之完工价值，再测算物业之现状价值。{% endif %}</p>
         
         <div class="selBtn">
         	<a href="javascript:void(0);" class="btnB">开始测算</a>

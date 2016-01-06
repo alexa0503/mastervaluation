@@ -45,7 +45,7 @@
         {% endif %}
         {% if type.id != 7 %}
         <div class="cLine">
-            <h3>{% if app.request.get('status') != '1' %}规划{% else %}总{% endif %}建筑面积（平方米）如无资料可空白仅计算单价</h3>
+            <h3>{% if app.request.get('status') != '1' %}规划{% else %}总{% endif %}建筑面积（平方米）{% if type.id == 3 and type.id == 4%}如无资料可空白仅计算单价{% endif %}</h3>
             <input type="text" class="cInput" placeholder="1" name="area" onchange="comdify($(this))" onblur="comdify($(this))">
         </div>
         {% endif %}
@@ -209,9 +209,11 @@
     <script type="text/javascript">
     function comdify(obj) 
     { 
-        //var n = $(this).val();
-        //var n = obj.val();
-        var v = obj.val().split(",");
+        var vv = obj.val();
+        if( vv == ''){
+            vv = '1';
+        }
+        var v = vv.split(",");
         var n = parseFloat(v.join(""));
         n = String(n);
         //var n = 30000;

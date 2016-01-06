@@ -35,6 +35,7 @@ class DefaultController extends Controller
 	{
 		$session = $request->getSession();
 		$session->set('type',null);
+		$session->set('status', $status);
 		for ($i=1; $i < 8; $i++) { 
 			$result[] = $session->set('calculate_'.$i,null);
 			$result[] = $session->set('amount_price_'.$i,0);

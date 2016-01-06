@@ -1,6 +1,6 @@
 <div class="testBlock">
         <div class="testTitle">
-            {{ type.title }} {% if app.request.get('status') == 2 or type.id == 7 %} - 完工价值{% endif %}
+            {{ type.title }} {% if app.session.get('status') == 2 or type.id == 7 %} - 完工价值{% endif %}
         </div>
         
 <div class="blackBg">
@@ -21,7 +21,7 @@
         {% endif %}
         <div class="ciLine">评估时间：{{ '' | date('Y/m/d')}}</div>
         {% if type.id <= 5 and type.id >= 1 %}
-        <div class="ciLine">敏感性分析：<font class="grayFont">（纵轴租金变化率/横轴收益率）</font></div>
+        <div class="ciLine">敏感性分析：<font class="grayFont">（纵轴租金变化率/横轴资本化率）</font></div>
         {% endif %}
         {{ type.id }}
         {% if type.id == 7 %}
