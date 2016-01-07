@@ -252,6 +252,12 @@ class DefaultController extends Controller
 			//$session->set('calculate_'.$value,null);
 			$session->set('type',$types);
 		}
+		if(count($types) == 1){
+			$session->set('final_type',1);
+		}
+		else{
+			$session->set('final_type',0);
+		}
 
 		$result_type = $this->getDoctrine()->getRepository('AppBundle:Type')->find($type);
 		$return =  $this->render('AppBundle:default:calculate_result.html.twig', array(

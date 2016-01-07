@@ -51,5 +51,5 @@
 {% endif %}
 
 <div class="selBtn2">
-    <a href="{{ url('_measuring') }}" class="btnB">{% if app.session.get('type') == null %}进入汇总结果页{% else %}继续{% if app.session.get('status') == '1' %}测算完工价值{% else %}测算现状价值{% endif %}{% endif %}</a>
+    <a href="{{ url('_measuring') }}" class="btnB">{% if app.session.get('type') == null %}进入汇总结果页{% else %}继续{% if app.session.get('status') == '2' and app.session.get('final_type') == '1' %}测算现状价值{% else %}测算完工价值{% endif %}{% endif %}</a>
 </div>
