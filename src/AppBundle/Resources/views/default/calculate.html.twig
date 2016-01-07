@@ -18,7 +18,7 @@
     <div class="ciLine">敏感性分析：<font class="grayFont">（纵轴租金变化率/横轴资本化率）</font></div>
     {% endif %}
     {% if type.id == 7 %}
-    <div class="ciLine">现状价值测算结果（人民币元）：{{ amount_price | number_format(0,'.',',') }}</div>
+    <div class="ciLine">现状价值测算结果（人民币）：{{ amount_price | number_format(0,'.',',') }}</div>
     <div class="ciLine">占完工价值比例：{{ (price*100) | number_format(0) }}%</div>
     {% endif %}
 </div>
