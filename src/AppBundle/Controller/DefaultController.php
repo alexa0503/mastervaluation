@@ -104,8 +104,17 @@ class DefaultController extends Controller
 	public function calculateAction(Request $request)
 	{
 		$session = $request->getSession();
-		$grade = $request->get('grade') ? : 1;
-		$session->set('grade',$grade);
+		$city = $request->get('grade') ? : '';
+		$row = $this->getDoctrine()->getRepository('AppBundle:City')->findOneByTitle($city);
+		
+		if( null == $row){
+			$grade = 1;
+		}
+		else{
+			$grade = $row->getGrade();
+		}
+
+		$session->set('city',$city);
 		$regional = $request->get('regional') ? : 1;
 		$session->set('regional',$regional);
 		$status = $request->get('status') ? : 1;

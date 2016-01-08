@@ -13,7 +13,7 @@
             <select class="cSelect" id="grade" name="grade">
                 <option value="">请选择城市</option>
             {% for city in cities %}
-                <option value="{{ city.grade }}"{% if app.session.get('grade') == city.grade %} selected="selected"{% endif %}>{{ city.title }}</option>
+                <option value="{{ city.title }}"{% if app.session.get('city') == city.title %} selected="selected"{% endif %}>{{ city.title }}</option>
             {% endfor %}
             </select>
         </div>
