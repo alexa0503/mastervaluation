@@ -107,6 +107,7 @@ class DefaultController extends Controller
 		$grade = $request->get('grade') ? : 1;
 		$session->set('grade',$grade);
 		$regional = $request->get('regional') ? : 1;
+		$session->set('regional',$regional);
 		$status = $request->get('status') ? : 1;
 		$type = $request->get('type') ? : 1;
 		$regional = $request->get('regional') ? : 1;
