@@ -1,6 +1,6 @@
 <div class="cInfo">
     {% if type.id == 1 or type.id == 2 or type.id == 5 %}
-    <div class="ciLine">毛资本化率：{{ rate*100 | number_format(2) }}%</div>
+    <div class="ciLine">毛资本化率：{{ (rate*100) | number_format(2) }}%</div>
     <div class="ciLine">测算结果（人民币）：{{ amount_price | number_format(0,'.',',') }}</div>
     <div class="ciLine">单价（元/平方米）：{{ price | number_format(0,'.',',') }}</div>
     {% elseif type.id == 3 or type.id == 4 %}
