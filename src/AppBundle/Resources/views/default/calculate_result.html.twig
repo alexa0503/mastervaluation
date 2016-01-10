@@ -11,7 +11,7 @@
         <div class="ciLine">单价（元/平方米）：{{ price | number_format(0,'.',',') }}</div>
         {% elseif type.id == 3 or type.id == 4 %}
         <div class="ciLine">单房收益（人民币）：{{ price1 | number_format(0,'.',',') }}</div>
-        <div class="ciLine">净资本化率：{{ rate*100 | number_format(2) }}%</div>
+        <div class="ciLine">净资本化率：{{ (rate*100) | number_format(2) }}%</div>
         <div class="ciLine">测算结果（人民币）：{{ amount_price | number_format(0,'.',',') }}</div>
         <div class="ciLine">单价（元/间房）：{{ price | number_format(0,'.',',') }}</div>
         <div class="ciLine">单价（元/平方米）：{{ price2 | number_format(0,'.',',') }}</div>
@@ -38,7 +38,7 @@
                 <th width="100">&nbsp;</th>
                 <th>{{ (rate*100 - 1) | number_format(2) }}%</th>
                 <th>{{ (rate*100 - 0.5) | number_format(2) }}%</th>
-                <th>{{ rate*100 | number_format(2) }}%</th>
+                <th>{{ (rate*100) | number_format(2) }}%</th>
                 <th>{{ (rate*100 + 0.5) | number_format(2) }}%</th>
                 <th>{{ (rate*100 + 1) | number_format(2) }}%</th>
             </tr>
